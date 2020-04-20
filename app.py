@@ -1,10 +1,54 @@
 import random
 
 
-number = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "A", "J", "Q", "K"]
-suite = ["spade", "club", "heart", "diamond"]
+class Cards:
+    def __init__(self, value, suite):
+        self.value = value
+        self.suite = suite
+        # self.face = face
 
-deck = [v + " of " + w for v in number for w in suite]
-print(deck)
+    def show(self):
+        print('{} of {}'.format(self.value, self.suite))
 
-print(random.choice(deck))
+
+class Deck:
+    def __init__(self):
+        self.deck = []
+        self.build()
+
+    def build(self):
+        for i in range(1, 14):
+            for j in ["spade", "club", "heart", "diamond"]:
+                self.deck.append(Cards(i, j))
+
+    def show_deck(self):
+        for cards in self.deck:
+            cards.show()
+
+    def shuffle(self):
+        random.shuffle(self.deck)
+
+    def draw_card(self):
+        return self.deck.pop(0)
+
+    def re_deck(self):
+        self.deck.clear()
+        self.build()
+
+
+class People:
+    def __init__(self, player_name):
+        self.name = player_name
+
+
+d1 = Deck()
+d1.shuffle()
+d1.draw_card().show()
+print("***************************************")
+print(len(d1.deck))
+print("***************************************")
+d1.draw_card().show()
+print("***************************************")
+print(len(d1.deck))
+d1.re_deck()
+print(len(d1.deck))
