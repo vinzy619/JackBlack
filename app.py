@@ -41,14 +41,34 @@ class People:
         self.name = player_name
 
 
-d1 = Deck()
-d1.shuffle()
-d1.draw_card().show()
-print("***************************************")
-print(len(d1.deck))
-print("***************************************")
-d1.draw_card().show()
-print("***************************************")
-print(len(d1.deck))
-d1.re_deck()
-print(len(d1.deck))
+def deal(deck):
+    dealer_hand = []
+    player_hand = []
+    dealer_hand.append(deck.draw_card())
+    player_hand.append(deck.draw_card())
+    dealer_hand.append(deck.draw_card())
+    player_hand.append(deck.draw_card())
+    print("***************************************")
+    print("Dealer")
+    dealer_hand[0].show()
+    print("Total:")
+    print("***************************************")
+    print("Player")
+    for card in player_hand:
+        card.show()
+    print("Total:")
+    print("***************************************")
+
+
+if __name__ == '__main__':
+    d1 = Deck()
+    d1.shuffle()
+    asktoplay = input("Do you wanna bet?")
+    if asktoplay in ["Y", "y", "YES", "Yes", "yes"]:
+        deal(d1)
+
+    elif asktoplay in ["N", "n", "NO", "No", "no"]:
+        quit()
+    else:
+        pass
+
