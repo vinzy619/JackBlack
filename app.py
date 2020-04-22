@@ -8,7 +8,8 @@ class Cards:
         # self.face = face
 
     def show(self):
-        print('{} of {}'.format(self.value, self.suite))
+        return self.value, self.suite
+        # print('{} of {}'.format(self.value, self.suite))
 
 
 class Deck:
@@ -36,36 +37,43 @@ class Deck:
         self.build()
 
 
-class People:
-    def __init__(self, player_name):
-        self.name = player_name
+class Player:
+    def __init__(self, play_name, play_hand):
+        self.name = play_name
+        self.play_hand = play_hand
+
+    def show_player_hand(self):
+        total = 0
+        print(self.name)
+        for cards in self.play_hand:
+            print('{} of {}'.format(cards.value, cards.suite), end=", ")
+            total = total + cards.value
+
+        print("\nTotal:", total)
 
 
-def deal(deck):
+def deal(deck, player):
     dealer_hand = []
-    player_hand = []
     dealer_hand.append(deck.draw_card())
-    player_hand.append(deck.draw_card())
+    player.play_hand.append(deck.draw_card())
     dealer_hand.append(deck.draw_card())
-    player_hand.append(deck.draw_card())
+    player.play_hand.append(deck.draw_card())
     print("***************************************")
     print("Dealer")
-    dealer_hand[0].show()
-    print("Total:")
+    print(dealer_hand[0].show()[0], "of", dealer_hand[0].show()[1])
+    print("Total:", )
     print("***************************************")
-    print("Player")
-    for card in player_hand:
-        card.show()
-    print("Total:")
+    player.show_player_hand()
     print("***************************************")
 
 
 if __name__ == '__main__':
+    p1 = Player("John", play_hand=[])
     d1 = Deck()
     d1.shuffle()
     asktoplay = input("Do you wanna bet?")
     if asktoplay in ["Y", "y", "YES", "Yes", "yes"]:
-        deal(d1)
+        deal(d1, p1)
 
     elif asktoplay in ["N", "n", "NO", "No", "no"]:
         quit()
