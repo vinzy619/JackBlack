@@ -88,6 +88,7 @@ def hit_or_stand(player):
             display(deal1, p1)
             break
     else:
+        print("Player Stands")
         return
 
 
