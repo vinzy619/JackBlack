@@ -2,13 +2,18 @@ import random
 
 
 class Cards:
-    def __init__(self, value, suite):
-        self.value = value
+    def __init__(self, face, suite):
+        self.face = face
         self.suite = suite
-        # self.face = face
+        if self.face in ["J", "Q", "K"]:
+            self.value = 10
+        elif self.face == "A":
+            self.value = 1
+        else:
+            self.value = int(self.face)
 
     def show(self):
-        return self.value, self.suite
+        return self.face, self.suite, self.value
         # print('{} of {}'.format(self.value, self.suite))
 
 
@@ -18,7 +23,7 @@ class Deck:
         self.build()
 
     def build(self):
-        for i in range(1, 14):
+        for i in ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]:
             for j in ["spade", "club", "heart", "diamond"]:
                 self.deck.append(Cards(i, j))
 
@@ -41,29 +46,31 @@ class Player:
     def __init__(self, play_name, play_hand):
         self.name = play_name
         self.play_hand = play_hand
+        # self.total = 0
 
     def show_player_hand(self):
-        total = 0
+        self.total = 0
         print(self.name)
         for cards in self.play_hand:
-            print('{} of {}'.format(cards.value, cards.suite), end=", ")
-            total = total + cards.value
+            print('{} of {}'.format(cards.face, cards.suite), end=", ")
+            self.total = self.total + cards.value
 
-        print("\nTotal:", total)
+        print("\nTotal:", self.total)
 
 
 class Dealer:
     def __init__(self, deal_hand):
         self.deal_hand = deal_hand
+        # self.total = 0
 
     def show_dealer_hand(self):
-        total = 0
+        self.total = 0
         print("Dealer")
         for cards in self.deal_hand:
-            print('{} of {}'.format(cards.value, cards.suite), end=", ")
-            total = total + cards.value
+            print('{} of {}'.format(cards.face, cards.suite), end=", ")
+            self.total = self.total + cards.value
 
-        print("\nTotal:", total)
+        print("\nTotal:", self.total)
 
 
 def display(dealer, player):
@@ -81,12 +88,19 @@ def hit_or_stand(player):
     while next_move not in ["S", "s", "STAND", "Stand", "stand"]:
         if next_move in ["H", "h", "HIT", "Hit", "hit"]:
             player.play_hand.append(d1.draw_card())
-            display(deal1, p1)
-            return hit_or_stand(player)
-        if next_move in ["D", "d", "DOUBLE", "Double", "double"]:
+            display(deal1, player)
+            if player.total <= 21:
+                return hit_or_stand(player)
+            else:
+                print("Bust - You Loose")
+                break
+        elif next_move in ["D", "d", "DOUBLE", "Double", "double"]:
             player.play_hand.append(d1.draw_card())
             display(deal1, p1)
             break
+        else:
+            print("Invalid input. Please Try again.")
+            next_move = input("H: Hit, S: Stand, D: Double")
     else:
         print("Player Stands")
         return
